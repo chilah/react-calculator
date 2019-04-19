@@ -9,7 +9,6 @@ class App extends Component {
       displayValue: "",
       prevValue: "",
       isOperator: false,
-      error: false
     };
   }
 
@@ -69,12 +68,11 @@ class App extends Component {
   };
 
   deleteValue = () => {
-    const { displayValue } = this.state;
-    const num = displayValue.length > 1 ? displayValue.slice(0, -1) : "";
-
     this.setState(state => {
       return {
-        displayValue: num
+        displayValue: state.displayValue.length > 1 ? state.displayValue.slice(0, -1) : "",
+        prevValue: state.displayValue.length > 1 ? state.prevValue.slice(0, -1) : "",
+        isOperator: false,
       };
     });
   };
@@ -92,8 +90,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <div className="display">
-          {this.state.error && <h3>Please fill the completely digit</h3>}
+        <div className="display"> 
           <h5 className="display--prevValue">
             {this.state.prevValue ? this.state.prevValue : "0"}
           </h5>
