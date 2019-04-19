@@ -1,0 +1,14 @@
+.keypad {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  grid-gap: 5px;
+}
+
+.delete__btn {
+  grid-column: 3 / 5;
+}
+
+.clear__btn {
+  grid-column: 1 / 3;
+}
