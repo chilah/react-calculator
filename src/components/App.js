@@ -56,6 +56,19 @@ class App extends Component {
     }
   };
 
+  inputDecimal = e => {
+    const { name } = e.target
+
+    if (!this.state.displayValue.includes(name)) {
+      this.setState(state => {
+        return {
+          displayValue: state.displayValue + '.',
+          prevValue: state.prevValue + '.',
+        }
+      })
+    }
+  }
+
   calculate = () => {
     const calc = eval(this.state.prevValue);
 
@@ -68,13 +81,23 @@ class App extends Component {
   };
 
   deleteValue = () => {
-    this.setState(state => {
-      return {
-        displayValue: state.displayValue.length > 1 ? state.displayValue.slice(0, -1) : "",
-        prevValue: state.displayValue.length > 1 ? state.prevValue.slice(0, -1) : "",
-        isOperator: false,
-      };
-    });
+    if (this.state.displayValue.length > 1 && !this.state.isOperator) {
+      this.setState(state => {
+        return {
+          displayValue: state.displayValue.slice(0, -1),
+          prevValue: state.prevValue.slice(0, -1),
+        }
+      })
+    }
+
+    if (this.state.displayValue.length <= 1 && !this.state.isOperator) {
+      this.setState(state => {
+        return {
+          displayValue: "",
+          prevValue: "",
+        }
+      })
+    }
   };
 
   clearValue = () => {
@@ -102,6 +125,7 @@ class App extends Component {
           calculate={this.calculate}
           deleteValue={this.deleteValue}
           clearValue={this.clearValue}
+          inputDecimal={this.inputDecimal}
         />
       </div>
     );

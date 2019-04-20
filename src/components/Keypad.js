@@ -104,7 +104,7 @@ export class Keypad extends Component {
         >
           +
         </button>
-        <button name="." className="btn btn-dark btn-lg">
+        <button name="." onClick={this.props.inputDecimal} className="btn btn-dark btn-lg">
           .
         </button>
         <button
