@@ -8,35 +8,45 @@ class App extends Component {
     this.state = {
       displayValue: "",
       prevValue: "",
-      isOperator: false,
+      isOperator: false
     };
   }
 
   inputValue = e => {
     const { name } = e.target;
-
-    if (this.state.isOperator) {
-      this.setState(state => {
-        return {
-          displayValue: name,
-          prevValue: state.prevValue + name,
-          isOperator: false
-        };
-      });
+    if (
+      this.state.displayValue.length < 15 &&
+      this.state.prevValue.length < 15
+    ) {
+      if (this.state.isOperator) {
+        this.setState(state => {
+          return {
+            displayValue: name,
+            prevValue: state.prevValue + name,
+            isOperator: false
+          };
+        });
+      } else {
+        this.setState(state => {
+          return {
+            displayValue: state.displayValue + name,
+            prevValue: state.prevValue + name
+          };
+        });
+      }
     } else {
-      this.setState(state => {
-        return {
-          displayValue: state.displayValue + name,
-          prevValue: state.prevValue + name
-        };
-      });
+      this.clearValue();
     }
   };
 
   inputOperator = e => {
     const { name } = e.target;
 
-    if (this.state.displayValue !== "" && !this.state.isOperator) {
+    if (
+      this.state.displayValue !== "" &&
+      !this.state.isOperator &&
+      this.state.prevValue.length < 15
+    ) {
       this.setState(state => {
         return {
           displayValue: name,
@@ -50,24 +60,24 @@ class App extends Component {
       this.setState(state => {
         return {
           displayValue: name,
-          prevValue: state.prevValue.slice(0, -1) + name,
-        }
-      })
+          prevValue: state.prevValue.slice(0, -1) + name
+        };
+      });
     }
   };
 
   inputDecimal = e => {
-    const { name } = e.target
+    const { name } = e.target;
 
     if (!this.state.displayValue.includes(name)) {
       this.setState(state => {
         return {
-          displayValue: state.displayValue + '.',
-          prevValue: state.prevValue + '.',
-        }
-      })
+          displayValue: state.displayValue + ".",
+          prevValue: state.prevValue + "."
+        };
+      });
     }
-  }
+  };
 
   calculate = () => {
     const calc = eval(this.state.prevValue);
@@ -85,18 +95,18 @@ class App extends Component {
       this.setState(state => {
         return {
           displayValue: state.displayValue.slice(0, -1),
-          prevValue: state.prevValue.slice(0, -1),
-        }
-      })
+          prevValue: state.prevValue.slice(0, -1)
+        };
+      });
     }
 
     if (this.state.displayValue.length <= 1 && !this.state.isOperator) {
       this.setState(state => {
         return {
           displayValue: "",
-          prevValue: "",
-        }
-      })
+          prevValue: ""
+        };
+      });
     }
   };
 
@@ -113,20 +123,30 @@ class App extends Component {
   render() {
     return (
       <div>
-        <div className="display"> 
-          <h5 className="display--prevValue">
-            {this.state.prevValue ? this.state.prevValue : "0"}
-          </h5>
-          <h1>{this.state.displayValue ? this.state.displayValue : "0"}</h1>
+        <h1 className="display__status">
+          Status:
+          {this.state.prevValue.length >= 15 ? (
+            <span className="warning--text">Digit is limited</span>
+          ) : (
+            <span className="active--text">Active</span>
+          )}
+        </h1>
+        <div className="calculator">
+          <div className="display">
+            <h5 className="display--prevValue">
+              {this.state.prevValue ? this.state.prevValue : "0"}
+            </h5>
+            <h1>{this.state.displayValue ? this.state.displayValue : "0"}</h1>
+          </div>
+          <Keypad
+            inputValue={this.inputValue}
+            inputOperator={this.inputOperator}
+            calculate={this.calculate}
+            deleteValue={this.deleteValue}
+            clearValue={this.clearValue}
+            inputDecimal={this.inputDecimal}
+          />
         </div>
-        <Keypad
-          inputValue={this.inputValue}
-          inputOperator={this.inputOperator}
-          calculate={this.calculate}
-          deleteValue={this.deleteValue}
-          clearValue={this.clearValue}
-          inputDecimal={this.inputDecimal}
-        />
       </div>
     );
   }
