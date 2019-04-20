@@ -45,7 +45,8 @@ class App extends Component {
     if (
       this.state.displayValue !== "" &&
       !this.state.isOperator &&
-      this.state.prevValue.length < 15
+      this.state.prevValue.length < 15 &&
+      this.state.displayValue.length < 15
     ) {
       this.setState(state => {
         return {
@@ -123,9 +124,10 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1 className="display__status">
+        <h1 className="status--text">
           Status:
-          {this.state.prevValue.length >= 15 ? (
+          {this.state.prevValue.length >= 15 &&
+          this.state.displayValue.length < 15 ? (
             <span className="warning--text">Digit is limited</span>
           ) : (
             <span className="active--text">Active</span>
