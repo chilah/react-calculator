@@ -126,8 +126,8 @@ class App extends Component {
       <div>
         <h1 className="status--text">
           Status:
-          {this.state.prevValue.length >= 15 &&
-          this.state.displayValue.length < 15 ? (
+          {this.state.prevValue.length >= 15 ||
+          this.state.displayValue.length >= 15 ? (
             <span className="warning--text">Digit is limited</span>
           ) : (
             <span className="active--text">Active</span>
